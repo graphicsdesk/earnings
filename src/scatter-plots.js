@@ -7,6 +7,7 @@ import { Delaunay } from 'd3-delaunay';
 import { f } from 'd3-jetpack/essentials';
 
 import SCORECARD_DATA from '../data/data.json';
+import { CU_NAME } from './constants';
 
 const VORONOI_RADIUS = 50;
 const CIRCLE_RADIUS = 6.5;
@@ -55,7 +56,6 @@ function graphSubject(container, { cred, field }) {
     .call(yAxis);
 
   // Create axis labels
-  console.log(`rotate(90deg) translate(0, ${gSize / 2})`)
   svg.append('text.axis-label')
     .translate([ gSize / 2, gSize + margin.bottom ])    
     .text('More debt');  
@@ -63,7 +63,6 @@ function graphSubject(container, { cred, field }) {
     .st({ transform: `translate(${-margin.left}px, ${gSize / 2}px) rotate(90deg)` })
     .text('More earnings');
   
-
   // Create dots
   svg.append('g.circles')
     .appendMany('circle', data)
@@ -71,6 +70,15 @@ function graphSubject(container, { cred, field }) {
       cx: r => x(r.debt),
       cy: r => y(r.earnings),
       r: CIRCLE_RADIUS,
+      fillOpacity: 0.6,
+    });
+
+  const cuDatum = data.filter(row => row.institution === CU_NAME);
+  console.log(cuDatum)
+  svg.append('text.institution-label')
+    .at({
+      x: x(cuDatum.debt),
+      y: y(cuDatum.earnings),
     });
 
   // Create Delaunay
@@ -89,9 +97,15 @@ function graphSubject(container, { cred, field }) {
         return mouseleft();
 
       circleHighlight.at({ cx: datumX, cy: datumY }).st({ opacity: 1 });
-      my = gSize - my;
-      const top = containerY + rotatedGSize - mx / 1.414 - my / 1.414 + 70;
-      const left = containerX + rotatedGSize / 2 + mx / 1.414 - my / 1.414 + 50;
+
+      // Baseline calculations
+      let top = containerY + rotatedGSize - mx / 1.414 - (gSize - my) / 1.414 + 32;
+      let left = containerX + rotatedGSize / 2 + mx / 1.414 - (gSize - my) / 1.414 + 52;
+      // Adjustments
+      const ADJUST = 10
+      top += ADJUST
+      left += ADJUST
+
       // TODO: ADJUST ORIENTATION IF OVER SCREEN
       tooltip.st({
         top,
@@ -117,8 +131,8 @@ function graphSubject(container, { cred, field }) {
   const rect = svg.append('rect')
     .at({
       fill: 'transparent',
-      width: gSize,
-      height: gSize,
+      width: SIZE,
+      height: SIZE,
     })
     .on('mousemove', mousemoved)
     .on('mouseleave', mouseleft);

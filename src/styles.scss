@@ -104,19 +104,42 @@ g.circles > circle {
 /* Bar charts */
 
 .bars-container {
-  max-width: 600px;
   margin: 0 auto;
+  display: flex;
 }
 
 .bar-chart-container {
   display: grid;
-  grid-auto-rows: 19px;
+  max-width: 500px;
+  grid-auto-rows: min-content;
   grid-template-columns: 1fr 1fr;
   column-gap: 8px;
 }
 
+.bar-chart-container:not(:last-child) {
+  padding-right: 40px;
+}
+
+.bar-chart-title {
+  margin: 0;
+  text-align: center;
+  position: relative;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 17px;
+  padding-bottom: 10px;
+}
+
+.bars-container {
+  display: flex;
+  justify-content: center;
+}
+
+$bar-height: 19px;
+
 .bar-container {
   display: flex;
+  height: $bar-height;
 }
 
 .bar {
@@ -126,6 +149,7 @@ g.circles > circle {
 }
 
 .bar-label {
+  height: $bar-height;
   text-align: right;
   margin: 0;
   transition-duration: 0.2s;

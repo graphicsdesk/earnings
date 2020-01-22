@@ -4,24 +4,30 @@ import { format } from 'd3-format';
 import { f } from 'd3-jetpack/essentials';
 
 import SCORECARD_DATA from '../data/data.json';
+import { CU_NAME } from './constants';
 
 function graphBars(container, { cred, column }, highlights = []) {
   const data = SCORECARD_DATA
-    .filter(row => row.institution === 'Columbia University in the City of New York' && row.cred === cred)
+    .filter(row => row.institution === CU_NAME && row.cred === cred)
     .map(row => ({ field: row.field, [column]: row[column] }))
-    .sort((a, b) => b[column] - a[column]);
+    .sort((a, b) => (b[column] - a[column]) * (column === 'debt' ? 1 : -1));
   const maxValue = max(data, d => d[column]);
+
+  // Title
+  container.append('dummy');
+  container.append('p.bar-chart-title')
+    .text(`Median ${column} for ${cred}'s degrees at Columbia`);
 
   // Create bars
   data.forEach((d, i) => {
-    const { field} = d;
+    const { field } = d;
 
     const fieldLabel = container.append('p.bar-label')
       .text(field);
     const barContainer = container.append('div.bar-container');
 
     const numberLabel = barContainer.append('p.bar-number-label')
-      .translate([10, 0])
+      .translate([5, 1])
       .text(format('$,')(d[column]));
 
     const bar = barContainer.insert('div.bar', ':first-child')
