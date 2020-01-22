@@ -94,3 +94,48 @@ g.circles > circle {
     line-height: 1.3;
   }
 }
+
+/* Bar charts */
+
+.bars-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.bar-chart-container {
+  display: grid;
+  grid-auto-rows: 19px;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8px;
+}
+
+.bar-container {
+  display: flex;
+}
+
+.bar {
+  background: blue;
+  box-sizing: border-box;
+  border: 0 solid black;
+}
+
+.bar-label {
+  text-align: right;
+  margin: 0;
+  transition-duration: 0.2s;
+  font-family: Roboto;
+  // font-weight: bold;
+  font-size: 14px;
+}
+
+.bar-number-label {
+  margin: 0;
+  transition-duration: 0.2s;
+  width: 0;
+  font-family: Roboto;
+  font-size: 12px;
+}
+
+// .bar:hover + .bar-label {
+  // opacity: 1;
+// }

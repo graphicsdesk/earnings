@@ -8,7 +8,7 @@ import { f } from 'd3-jetpack/essentials';
 
 import SCORECARD_DATA from '../data/data.json';
 
-const VORONOI_RADIUS = 120;
+const VORONOI_RADIUS = 50;
 const CIRCLE_RADIUS = 6.5;
 
 const SIZE = 300;
@@ -25,7 +25,7 @@ const formatAxis = (axis, scale) => axis.scale(scale)
   .tickFormat(format('$~s'))
   .ticks(4);
 
-function graphSubject({ cred, field }, container) {
+function graphSubject(container, { cred, field }) {
   const data = SCORECARD_DATA.filter(row => cred === row.cred && field === row.field);
 
   // Create scale and axis functions
@@ -80,9 +80,12 @@ function graphSubject({ cred, field }, container) {
 
       circleHighlight.at({ cx: datumX, cy: datumY }).st({ opacity: 1 });
       my = gSize - my;
+      const top = containerY + rotatedGSize - mx / 1.414 - my / 1.414 + 70;
+      const left = containerX + rotatedGSize / 2 + mx / 1.414 - my / 1.414 + 50;
+      // TODO: ADJUST ORIENTATION IF OVER SCREEN
       tooltip.st({
-        top: containerY + rotatedGSize - mx / 1.414 - my / 1.414 + 30,
-        left: containerX + rotatedGSize / 2 + mx / 1.414 - my / 1.414,
+        top,
+        left,
         opacity: 1,
       });
       tooltipText.html(`
@@ -141,7 +144,7 @@ for (const container of document.getElementsByClassName('charts-container')) {
         marginBottom: (ROTATED_SIZE - SIZE) / 2 - margin.bottom,
       })
       .text(subj.field);
-      graphSubject(subj, subjContainer);
+      graphSubject(subjContainer, subj);
     });
 }
 
