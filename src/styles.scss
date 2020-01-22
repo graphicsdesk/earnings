@@ -16,7 +16,7 @@
   align-items: center;
 }
 
-.chart-container > svg {
+.chart-container svg {
   transform: rotate(-45deg);
 }
 
@@ -25,13 +25,18 @@
   font-family: Roboto;
   font-weight: bold;
   font-size: 16px;
+  z-index: 1;
 }
 
 .axis-label {
   font-family: Roboto;
-  font-size: 14px;
-  fill: #999;
+  font-size: 15px;
+  fill: #343434;
   text-anchor: middle;
+
+  tspan {
+    font-weight: 700;
+  }
 }
 
 path.domain {
@@ -54,33 +59,41 @@ g.tick {
   }
 }
 
-g.x-axis > g.tick > text {
+g.x-axis g.tick text {
   text-anchor: start;
   transform:  translate(3px, 3px) rotate(45deg);
 }
 
-g.x-axis > g.tick:nth-child(2) > text {
+g.x-axis g.tick:nth-child(2) text {
   transform: rotate(45deg) translate(-2px);
 }
 
-g.y-axis > g.tick > text {
+g.y-axis g.tick text {
   text-anchor: end;
   transform: translate(-3px, -3px) rotate(45deg);
 }
 
-g.y-axis > g.tick:nth-child(2) > text {
+g.y-axis g.tick:nth-child(2) text {
   display: none;
 }
 
-g.circles > circle {
+g.circles circle {
   fill: red;
 }
 
-#circle-highlight {
+.circle-highlight {
   stroke-width: 2px;
   stroke: #111;
   fill: none;
   transition: opacity .2s;
+}
+
+tspan.text-background {
+  stroke: #fff;
+  stroke-width: 3;
+  opacity: 0.7;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
 /* Tooltip */
@@ -99,6 +112,15 @@ g.circles > circle {
     margin: 0;
     line-height: 1.3;
   }
+}
+
+text.institution-label {
+  transform: rotate(45deg) translateY(-16px);
+  font-family: Roboto;
+  font-size: 15px;
+  transform-origin: center;
+  transform-box: fill-box;
+  text-anchor: middle;
 }
 
 /* Bar charts */

@@ -31,10 +31,10 @@ function graphSubject(container, { cred, field }) {
 
   // Create scale and axis functions
   const x = scaleLinear()
-    .domain([0, max(data, r => Math.max(r.debt, r.earnings))])
+    .domain([0, max(data, r => Math.max(r.debt, r.earnings)) * 1.05])
     .range([0, gSize]);
   const y = scaleLinear()
-    .domain([0, max(data, r => Math.max(r.debt, r.earnings))])
+    .domain([0, max(data, r => Math.max(r.debt, r.earnings)) * 1.05])
     .range([gSize, 0]);
   const xAxis = formatAxis(axisBottom(), x);
   const yAxis = formatAxis(axisLeft(), y);
@@ -56,12 +56,15 @@ function graphSubject(container, { cred, field }) {
     .call(yAxis);
 
   // Create axis labels
+  const ADJUST = 8;
   svg.append('text.axis-label')
-    .translate([ gSize / 2, gSize + margin.bottom ])    
-    .text('More debt');  
+    .translate([ gSize / 2, gSize + margin.bottom - ADJUST ])
+    .text('More debt ')
+    .append('tspan')
+    .text('⟶');
   svg.append('text.axis-label')
-    .st({ transform: `translate(${-margin.left}px, ${gSize / 2}px) rotate(90deg)` })
-    .text('More earnings');
+    .st({ transform: `translate(${-margin.left + ADJUST}px, ${gSize / 2}px) rotate(90deg)` })
+    .html('<tspan>⟵</tspan> More earnings');
   
   // Create dots
   svg.append('g.circles')
@@ -73,13 +76,26 @@ function graphSubject(container, { cred, field }) {
       fillOpacity: 0.6,
     });
 
-  const cuDatum = data.filter(row => row.institution === CU_NAME);
-  console.log(cuDatum)
-  svg.append('text.institution-label')
+  const cuDatum = data.filter(row => row.institution === CU_NAME)[0];
+  const cuLabel = svg.append('text.institution-label');
+  cuLabel.append('tspan.text-background')
+    .text('Columbia')
     .at({
       x: x(cuDatum.debt),
       y: y(cuDatum.earnings),
     });
+  cuLabel.append('tspan')
+    .text('Columbia')
+    .at({
+      x: x(cuDatum.debt),
+      y: y(cuDatum.earnings),
+    });
+  svg.append('circle.circle-highlight')
+    .at({
+      cx: x(cuDatum.debt),
+      cy: y(cuDatum.earnings),
+      r: CIRCLE_RADIUS,
+    })
 
   // Create Delaunay
   const delaunay = Delaunay.from(data, d => x(d.debt), d => y(d.earnings));
@@ -125,7 +141,7 @@ function graphSubject(container, { cred, field }) {
     tooltip.st({ opacity: 0 });
   }
 
-  const circleHighlight = svg.append('circle#circle-highlight')
+  const circleHighlight = svg.append('circle.circle-highlight')
     .at({ r: CIRCLE_RADIUS })
     .st({ opacity: 0 });
   const rect = svg.append('rect')
@@ -165,6 +181,7 @@ for (const container of document.getElementsByClassName('charts-container')) {
       })
       .append('p.subject-title')
       .st({
+        marginTop: 0,
         marginBottom: (ROTATED_SIZE - SIZE) / 2 - margin.bottom + 15,
       })
       .text(subj.field);
