@@ -14,31 +14,28 @@ const CIRCLE_RADIUS = 6.5;
 const SIZE = 300;
 const ROTATED_SIZE = SIZE * 1.414;
 const margin = { top: 5, right: 5, left: 40, bottom: 40 };
+const gSize = SIZE - margin.left - margin.top;
 
 const tooltip = select('#tooltip');
 const tooltipText = tooltip.append('p');
+
+const formatAxis = (axis, scale) => axis.scale(scale)
+  .tickSize(-gSize)
+  .tickFormat(format('$~s'))
+  .ticks(4);
 
 function graphSubject({ cred, field }, container) {
   const data = SCORECARD_DATA.filter(row => cred === row.cred && field === row.field);
 
   // Create scale and axis functions
-  const gSize = SIZE - margin.left - margin.top;
   const x = scaleLinear()
     .domain([0, max(data, r => Math.max(r.debt, r.earnings))])
     .range([0, gSize]);
   const y = scaleLinear()
     .domain([0, max(data, r => Math.max(r.debt, r.earnings))])
     .range([gSize, 0]);
-  const xAxis = axisBottom()
-    .scale(x)
-    .tickSize(-gSize)
-    .tickFormat(format('$~s'))
-    .ticks(5);
-  const yAxis = axisLeft()
-    .scale(y)
-    .tickSize(-gSize)
-    .tickFormat(format('$~s'))
-    .ticks(5);
+  const xAxis = formatAxis(axisBottom(), x);
+  const yAxis = formatAxis(axisLeft(), y);
 
   // Create svg
   const svg = container.append('svg')

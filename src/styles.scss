@@ -49,7 +49,7 @@ g.tick {
 
 g.x-axis > g.tick > text {
   text-anchor: start;
-  transform: rotate(45deg);
+  transform:  translate(3px, 3px) rotate(45deg);
 }
 
 g.x-axis > g.tick:nth-child(2) > text {
@@ -58,7 +58,7 @@ g.x-axis > g.tick:nth-child(2) > text {
 
 g.y-axis > g.tick > text {
   text-anchor: end;
-  transform: rotate(45deg);
+  transform: translate(-3px, -3px) rotate(45deg);
 }
 
 g.y-axis > g.tick:nth-child(2) > text {
