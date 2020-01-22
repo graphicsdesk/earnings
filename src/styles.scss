@@ -1,10 +1,25 @@
 @import 'styles/spectate';
 
-// @import 'styles/eye-lead-ellipsis';
 // @import 'styles/news-ellipsis';
 
-.graphic-name {
-  height: 300px;
-  border: 1px solid red;
-  color: red;
+.charts-container {
+  display: flex;
+  justify-content: center;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-container > svg {
+  transform: rotate(-45deg);
+}
+
+.subject-title {
+  text-align: center;
+  font-family: Roboto;
+  font-weight: bold;
+  font-size: 16px;
 }

@@ -21,6 +21,11 @@
     "yaml": "^1.7.1"
   },
   "dependencies": {
+    "d3-array": "^2.4.0",
+    "d3-axis": "^1.0.12",
+    "d3-jetpack": "^2.0.20",
+    "d3-scale": "^3.2.1",
+    "d3-selection": "^1.4.1",
     "enter-view": "^2.0.0",
     "text-balancer": "^1.0.5"
   }

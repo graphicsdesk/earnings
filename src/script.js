@@ -1,9 +1,11 @@
-import enterView from 'enter-view';
+// import enterView from 'enter-view';
 import textBalancer from 'text-balancer';
 
 import { USE_COVER_HED } from '../config.yml';
 
-// Fade in navbar at scroll trigger
+import './scatter-plots.js';
+
+/* Fade in navbar at scroll trigger
 
 const navbar = document.getElementById('navbar');
 enterView({
@@ -17,6 +19,8 @@ enterView({
     navbar.classList.add('only-logo');
   },
 });
+
+*/
 
 // Mobile navbar hamburger trigger
 
