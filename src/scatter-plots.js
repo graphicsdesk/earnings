@@ -5,6 +5,7 @@ import { axisLeft, axisBottom } from 'd3-axis';
 import { format } from 'd3-format';
 import { Delaunay } from 'd3-delaunay';
 import { f } from 'd3-jetpack/essentials';
+
 import SCORECARD_DATA from '../data/data.json';
 
 const VORONOI_RADIUS = 50;
@@ -13,11 +14,10 @@ const SIZE = 300;
 const ROTATED_SIZE = SIZE * 1.414;
 const margin = { top: 5, right: 5, left: 40, bottom: 40 };
 
-const chartsContainers = document.getElementsByClassName('charts-container');
-
 function graphSubject({ cred, field }, container) {
   const data = SCORECARD_DATA.filter(row => cred === row.cred && field === row.field);
 
+  // Create scale and axis functions
   const gSize = SIZE - margin.left - margin.top;
   const x = scaleLinear()
     .domain([0, max(data, r => Math.max(r.debt, r.earnings))])
@@ -34,6 +34,7 @@ function graphSubject({ cred, field }, container) {
     .tickSize(-gSize)
     .tickFormat(format('$~s'));
 
+  // Create svg
   const svg = container.append('svg')
     .at({
       width: SIZE,
@@ -77,11 +78,11 @@ function graphSubject({ cred, field }, container) {
     .attr('fill', 'transparent')
     .attr('width', SIZE)
     .attr('height', SIZE)
-    .on('mousemove', mousemoved)  
-  console.log(delaunay)
+    .on('mousemove', mousemoved);
 }
 
-for (const container of chartsContainers) {
+for (const container of document.getElementsByClassName('charts-container')) {
+  // Derive subject data
   const subjects = container
     .getAttribute('data-subjects')
     .split(';')
@@ -91,6 +92,7 @@ for (const container of chartsContainers) {
       return { cred, field };
     });
 
+  // Create chart containers and graph and title each one
   select(container).appendMany('div.chart-container', subjects)
     .each(function(subj) {
       const subjContainer = select(this);
@@ -105,10 +107,10 @@ for (const container of chartsContainers) {
           marginTop: (ROTATED_SIZE - SIZE) / 2 - margin.bottom / 2,
         })
         .text(subj.field);
-    })
+    });
 }
 
-// Utility function, cartesian distance
+// Utility function; cartesian distance
 function distance(px, py, mx, my) {
   const a = px - mx;
   const b = py - my;
