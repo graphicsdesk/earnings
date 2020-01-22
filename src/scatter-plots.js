@@ -28,11 +28,13 @@ function graphSubject({ cred, field }, container) {
   const xAxis = axisBottom()
     .scale(x)
     .tickSize(-gSize)
-    .tickFormat(format('$~s'));
+    .tickFormat(format('$~s'))
+    .ticks(5);
   const yAxis = axisLeft()
     .scale(y)
     .tickSize(-gSize)
-    .tickFormat(format('$~s'));
+    .tickFormat(format('$~s'))
+    .ticks(5);
 
   // Create svg
   const svg = container.append('svg')
@@ -98,7 +100,7 @@ for (const container of document.getElementsByClassName('charts-container')) {
       const subjContainer = select(this);
       subjContainer.st({
         width: ROTATED_SIZE,
-        height: ROTATED_SIZE,
+        height: ROTATED_SIZE - (ROTATED_SIZE - SIZE) / 3,
         paddingTop: (ROTATED_SIZE - SIZE) / 3,
       })
       graphSubject(subj, subjContainer);

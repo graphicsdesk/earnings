@@ -5,6 +5,9 @@
 .charts-container {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
 .chart-container {
