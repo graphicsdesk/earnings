@@ -4,6 +4,7 @@ import textBalancer from 'text-balancer';
 import { USE_COVER_HED } from '../config.yml';
 
 import './scatter-plots.js';
+import './bar-charts.js';
 
 /* Fade in navbar at scroll trigger
 

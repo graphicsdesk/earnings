@@ -35,8 +35,11 @@
         </case>
         <case n="'graphic'">
           <div class="graphic">
-            <if condition="item.value.asset === 'chart.html'">
-              <include src="chart.html"></include>
+            <if condition="item.value.chart === 'scatter'">
+              <include src="scatter.html"></include>
+            </if>
+            <if condition="item.value.chart === 'bars'">
+              <include src="bars.html"></include>
             </if>
           </div>
         </case>

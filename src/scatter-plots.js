@@ -8,7 +8,7 @@ import { f } from 'd3-jetpack/essentials';
 
 import SCORECARD_DATA from '../data/data.json';
 
-const VORONOI_RADIUS = 100;
+const VORONOI_RADIUS = 120;
 const CIRCLE_RADIUS = 6.5;
 
 const SIZE = 300;
@@ -147,7 +147,6 @@ for (const container of document.getElementsByClassName('charts-container')) {
 
 // Utility function; cartesian distance
 function distance(px, py, mx, my) {
-  console.log('input', px, py, mx, my)
   const a = px - mx;
   const b = py - my;
   return Math.sqrt(a * a + b * b);
