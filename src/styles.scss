@@ -65,4 +65,25 @@ g.y-axis > g.tick:nth-child(2) > text {
   display: none;
 }
 
+g.circles > circle {
+  fill: red;
+}
 
+#circle-highlight {
+  stroke-width: 2px;
+  stroke: #111;
+  fill: none;
+  transition: opacity .3s;
+}
+
+/* Tooltip */
+
+#tooltip {
+  position: fixed;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid lightgray;
+  pointer-events: none;
+  width: 190px;
+  transition: opacity .3s;
+}

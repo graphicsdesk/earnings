@@ -8,11 +8,15 @@ import { f } from 'd3-jetpack/essentials';
 
 import SCORECARD_DATA from '../data/data.json';
 
-const VORONOI_RADIUS = 50;
+const VORONOI_RADIUS = 500;
+const CIRCLE_RADIUS = 6.5;
 
 const SIZE = 300;
 const ROTATED_SIZE = SIZE * 1.414;
 const margin = { top: 5, right: 5, left: 40, bottom: 40 };
+
+const tooltip = select('#tooltip');
+const tooltipText = tooltip.append('p');
 
 function graphSubject({ cred, field }, container) {
   const data = SCORECARD_DATA.filter(row => cred === row.cred && field === row.field);
@@ -58,29 +62,51 @@ function graphSubject({ cred, field }, container) {
     .at({
       cx: r => x(r.debt),
       cy: r => y(r.earnings),
-      r: 4,
+      r: CIRCLE_RADIUS,
     });
 
   // Create Delaunay
   const delaunay = Delaunay.from(data, d => x(d.debt), d => y(d.earnings));
+  const rotatedGSize = gSize * 1.414;
   function mousemoved() {
-    const [ mx, my ] = mouse(select(this).node());
+    let [ mx, my ] = mouse(select(this).node());
     const index = delaunay.find(mx, my);
+    my = gSize - my;
+    const { x: containerX, y: containerY } = container.node().getBoundingClientRect();
 
     if (index !== null) {
       const datum = data[ index ];
-      if (distance(x(datum.debt), y(datum.earnings), mx, my) > VORONOI_RADIUS)
-        return;
+      const datumX = x(datum.debt);
+      const datumY = y(datum.earnings);
+      if (distance(datumX, datumY, mx, my) > VORONOI_RADIUS)
+        return mouseleft();
 
-      console.log(datum.institution);
+      circleHighlight.at({ cx: datumX, cy: datumY }).st({ opacity: 1 });
+      tooltip.st({
+        top: containerY + rotatedGSize - mx / 1.414 - my / 1.414,
+        left: containerX + rotatedGSize / 2 + mx / 1.414 - my / 1.414,
+        opacity: 1,
+      });
+      tooltipText.text(datum.institution)
       // TODO: tooltip things
     }
   }
+  const mouseleft = () => {
+    circleHighlight.st({ opacity: 0 });
+    tooltip.st({ opacity: 0 });
+  }
+
+  const circleHighlight = svg.append('circle#circle-highlight')
+    .at({ r: CIRCLE_RADIUS })
+    .st({ opacity: 0 });
   const rect = svg.append('rect')
-    .attr('fill', 'transparent')
-    .attr('width', SIZE)
-    .attr('height', SIZE)
-    .on('mousemove', mousemoved);
+    .at({
+      fill: 'transparent',
+      width: gSize,
+      height: gSize,
+    })
+    .on('mousemove', mousemoved)
+    .on('mouseleave', mouseleft);
 }
 
 for (const container of document.getElementsByClassName('charts-container')) {
