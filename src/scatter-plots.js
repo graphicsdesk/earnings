@@ -13,7 +13,7 @@ const CIRCLE_RADIUS = 6.5;
 
 const SIZE = 300;
 const ROTATED_SIZE = SIZE * 1.414;
-const margin = { top: 20, right: 20, left: 35, bottom: 35 };
+const margin = { top: 20, right: 20, left: 55, bottom: 55 };
 const gSize = SIZE - margin.left - margin.top;
 const containerPadding = (ROTATED_SIZE - SIZE) / 2 - margin.bottom;
 
@@ -53,6 +53,16 @@ function graphSubject(container, { cred, field }) {
     .call(xAxis);
   svg.append('g.y-axis')
     .call(yAxis);
+
+  // Create axis labels
+  console.log(`rotate(90deg) translate(0, ${gSize / 2})`)
+  svg.append('text.axis-label')
+    .translate([ gSize / 2, gSize + margin.bottom ])    
+    .text('More debt');  
+  svg.append('text.axis-label')
+    .st({ transform: `translate(${-margin.left}px, ${gSize / 2}px) rotate(90deg)` })
+    .text('More earnings');
+  
 
   // Create dots
   svg.append('g.circles')
@@ -136,12 +146,12 @@ for (const container of document.getElementsByClassName('charts-container')) {
       const subjContainer = select(this);
       subjContainer.st({
         width: ROTATED_SIZE,
-        height: ROTATED_SIZE - (ROTATED_SIZE - SIZE) / 3,
+        height: ROTATED_SIZE - (ROTATED_SIZE - SIZE) / 2,
         paddingTop: containerPadding,
       })
       .append('p.subject-title')
       .st({
-        marginBottom: (ROTATED_SIZE - SIZE) / 2 - margin.bottom,
+        marginBottom: (ROTATED_SIZE - SIZE) / 2 - margin.bottom + 15,
       })
       .text(subj.field);
       graphSubject(subjContainer, subj);

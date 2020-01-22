@@ -27,6 +27,13 @@
   font-size: 16px;
 }
 
+.axis-label {
+  font-family: Roboto;
+  font-size: 14px;
+  fill: #999;
+  text-anchor: middle;
+}
+
 path.domain {
   display: none;
 }
@@ -86,7 +93,6 @@ g.circles > circle {
   pointer-events: none;
   width: 190px;
   transition: opacity .2s;
-
   font-family: $georgia;
 
   p {
