@@ -73,7 +73,7 @@ g.circles > circle {
   stroke-width: 2px;
   stroke: #111;
   fill: none;
-  transition: opacity .3s;
+  transition: opacity .2s;
 }
 
 /* Tooltip */
@@ -85,5 +85,12 @@ g.circles > circle {
   border: 1px solid lightgray;
   pointer-events: none;
   width: 190px;
-  transition: opacity .3s;
+  transition: opacity .2s;
+
+  font-family: $georgia;
+
+  p {
+    margin: 0;
+    line-height: 1.3;
+  }
 }

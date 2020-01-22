@@ -15,6 +15,7 @@ const SIZE = 300;
 const ROTATED_SIZE = SIZE * 1.414;
 const margin = { top: 20, right: 20, left: 35, bottom: 35 };
 const gSize = SIZE - margin.left - margin.top;
+const containerPadding = (ROTATED_SIZE - SIZE) / 2 - margin.bottom;
 
 const tooltip = select('#tooltip');
 const tooltipText = tooltip.append('p');
@@ -80,11 +81,15 @@ function graphSubject({ cred, field }, container) {
       circleHighlight.at({ cx: datumX, cy: datumY }).st({ opacity: 1 });
       my = gSize - my;
       tooltip.st({
-        top: containerY + rotatedGSize - mx / 1.414 - my / 1.414,
+        top: containerY + rotatedGSize - mx / 1.414 - my / 1.414 + 30,
         left: containerX + rotatedGSize / 2 + mx / 1.414 - my / 1.414,
         opacity: 1,
       });
-      tooltipText.text(datum.institution)
+      tooltipText.html(`
+        <b>${datum.institution}</b><br/>
+        Median debt: ${format('$,')(datum.debt)}<br/>
+        Median earnings: ${format('$,')(datum.earnings)}<br/>
+      `)
       // TODO: tooltip things
     }
   }
@@ -118,20 +123,25 @@ for (const container of document.getElementsByClassName('charts-container')) {
     });
 
   // Create chart containers and graph and title each one
-  select(container).appendMany('div.chart-container', subjects)
+  select(container)
+    .st({
+      marginTop: -containerPadding,
+      paddingBottom: containerPadding,
+    })
+    .appendMany('div.chart-container', subjects)
     .each(function(subj) {
       const subjContainer = select(this);
       subjContainer.st({
         width: ROTATED_SIZE,
         height: ROTATED_SIZE - (ROTATED_SIZE - SIZE) / 3,
-        paddingTop: (ROTATED_SIZE - SIZE) / 3,
+        paddingTop: containerPadding,
       })
+      .append('p.subject-title')
+      .st({
+        marginBottom: (ROTATED_SIZE - SIZE) / 2 - margin.bottom,
+      })
+      .text(subj.field);
       graphSubject(subj, subjContainer);
-      subjContainer.append('p.subject-title')
-        .st({
-          marginTop: (ROTATED_SIZE - SIZE) / 2 - margin.bottom / 2,
-        })
-        .text(subj.field);
     });
 }
 
