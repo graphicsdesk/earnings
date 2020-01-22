@@ -1,10 +1,13 @@
 import { scaleLinear } from 'd3-scale';
-import { select, selectAll } from 'd3-selection';
+import { select, selectAll, mouse } from 'd3-selection';
 import { max } from 'd3-array';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { format } from 'd3-format';
+import { Delaunay } from 'd3-delaunay';
 import { f } from 'd3-jetpack/essentials';
 import SCORECARD_DATA from '../data/data.json';
+
+const VORONOI_RADIUS = 50;
 
 const SIZE = 300;
 const ROTATED_SIZE = SIZE * 1.414;
@@ -47,12 +50,35 @@ function graphSubject({ cred, field }, container) {
     .call(yAxis);
 
   // Create dots
-  svg.appendMany('circle', data)
+  svg.append('g.circles')
+    .appendMany('circle', data)
     .at({
       cx: r => x(r.debt),
       cy: r => y(r.earnings),
       r: 4,
     });
+
+  // Create Delaunay
+  const delaunay = Delaunay.from(data, d => x(d.debt), d => y(d.earnings));
+  function mousemoved() {
+    const [ mx, my ] = mouse(select(this).node());
+    const index = delaunay.find(mx, my);
+
+    if (index !== null) {
+      const datum = data[ index ];
+      if (distance(x(datum.debt), y(datum.earnings), mx, my) > VORONOI_RADIUS)
+        return;
+
+      console.log(datum.institution);
+      // TODO: tooltip things
+    }
+  }
+  const rect = svg.append('rect')
+    .attr('fill', 'transparent')
+    .attr('width', SIZE)
+    .attr('height', SIZE)
+    .on('mousemove', mousemoved)  
+  console.log(delaunay)
 }
 
 for (const container of chartsContainers) {
@@ -82,4 +108,9 @@ for (const container of chartsContainers) {
     })
 }
 
-console.log()
+// Utility function, cartesian distance
+function distance(px, py, mx, my) {
+  const a = px - mx;
+  const b = py - my;
+  return Math.sqrt(a * a + b * b);
+}
