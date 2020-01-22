@@ -8,12 +8,12 @@ import { f } from 'd3-jetpack/essentials';
 
 import SCORECARD_DATA from '../data/data.json';
 
-const VORONOI_RADIUS = 500;
+const VORONOI_RADIUS = 100;
 const CIRCLE_RADIUS = 6.5;
 
 const SIZE = 300;
 const ROTATED_SIZE = SIZE * 1.414;
-const margin = { top: 5, right: 5, left: 40, bottom: 40 };
+const margin = { top: 20, right: 20, left: 35, bottom: 35 };
 const gSize = SIZE - margin.left - margin.top;
 
 const tooltip = select('#tooltip');
@@ -68,7 +68,6 @@ function graphSubject({ cred, field }, container) {
   function mousemoved() {
     let [ mx, my ] = mouse(select(this).node());
     const index = delaunay.find(mx, my);
-    my = gSize - my;
     const { x: containerX, y: containerY } = container.node().getBoundingClientRect();
 
     if (index !== null) {
@@ -79,6 +78,7 @@ function graphSubject({ cred, field }, container) {
         return mouseleft();
 
       circleHighlight.at({ cx: datumX, cy: datumY }).st({ opacity: 1 });
+      my = gSize - my;
       tooltip.st({
         top: containerY + rotatedGSize - mx / 1.414 - my / 1.414,
         left: containerX + rotatedGSize / 2 + mx / 1.414 - my / 1.414,
@@ -137,6 +137,7 @@ for (const container of document.getElementsByClassName('charts-container')) {
 
 // Utility function; cartesian distance
 function distance(px, py, mx, my) {
+  console.log('input', px, py, mx, my)
   const a = px - mx;
   const b = py - my;
   return Math.sqrt(a * a + b * b);
