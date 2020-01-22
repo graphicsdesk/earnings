@@ -23,3 +23,43 @@
   font-weight: bold;
   font-size: 16px;
 }
+
+path.domain {
+  display: none;
+}
+
+g.x-axis, g.y-axis {
+  shape-rendering: crispEdges;
+}
+
+g.tick {
+  line {
+    stroke: #ccc;
+  }
+
+  text {
+    font-family: Roboto;
+    font-size: 12px;
+    fill: #999;
+  }
+}
+
+g.x-axis > g.tick > text {
+  text-anchor: start;
+  transform: rotate(45deg);
+}
+
+g.x-axis > g.tick:nth-child(2) > text {
+  transform: rotate(45deg) translate(-2px);
+}
+
+g.y-axis > g.tick > text {
+  text-anchor: end;
+  transform: rotate(45deg);
+}
+
+g.y-axis > g.tick:nth-child(2) > text {
+  display: none;
+}
+
+

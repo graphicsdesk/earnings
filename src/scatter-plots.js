@@ -2,6 +2,7 @@ import { scaleLinear } from 'd3-scale';
 import { select, selectAll } from 'd3-selection';
 import { max } from 'd3-array';
 import { axisLeft, axisBottom } from 'd3-axis';
+import { format } from 'd3-format';
 import { f } from 'd3-jetpack/essentials';
 import SCORECARD_DATA from '../data/data.json';
 
@@ -22,9 +23,13 @@ function graphSubject({ cred, field }, container) {
     .domain([0, max(data, r => Math.max(r.debt, r.earnings))])
     .range([gSize, 0]);
   const xAxis = axisBottom()
-    .scale(x);
+    .scale(x)
+    .tickSize(-gSize)
+    .tickFormat(format('$~s'));
   const yAxis = axisLeft()
-    .scale(y);
+    .scale(y)
+    .tickSize(-gSize)
+    .tickFormat(format('$~s'));
 
   const svg = container.append('svg')
     .at({
@@ -33,18 +38,21 @@ function graphSubject({ cred, field }, container) {
     })
     .append('g')
     .translate([ margin.left, margin.top ])
+
+  // Create axes
+  svg.append('g.x-axis')
+    .translate([ 0, gSize ])
+    .call(xAxis);
+  svg.append('g.y-axis')
+    .call(yAxis);
+
+  // Create dots
   svg.appendMany('circle', data)
     .at({
       cx: r => x(r.debt),
       cy: r => y(r.earnings),
       r: 4,
     });
-
-  svg.append('g.axis')
-    .translate([0, gSize])
-    .call(xAxis);
-  svg.append('g.axis')
-    .call(yAxis);
 }
 
 for (const container of chartsContainers) {
@@ -53,7 +61,7 @@ for (const container of chartsContainers) {
     .split(';')
     .map(subject => {
       let [ cred, field ] = subject.split(': ');
-      cred = { 'B': 'Bachelor', 'M': 'Master' }[cred];
+      cred = { 'B': 'Bachelor', 'M': 'Master' }[ cred.trim() ];
       return { cred, field };
     });
 
@@ -63,7 +71,7 @@ for (const container of chartsContainers) {
       subjContainer.st({
         width: ROTATED_SIZE,
         height: ROTATED_SIZE,
-        // paddingTop: (ROTATED_SIZE - SIZE) / 2,
+        paddingTop: (ROTATED_SIZE - SIZE) / 3,
       })
       graphSubject(subj, subjContainer);
       subjContainer.append('p.subject-title')
