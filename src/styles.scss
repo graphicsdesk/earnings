@@ -1,5 +1,9 @@
 @import 'styles/spectate';
 
+body {
+  overflow-x: hidden;
+}
+
 .subsubhed {
   margin: 40px auto -20px;
   font-family: Roboto;
@@ -9,7 +13,7 @@
   line-height: 1.63;
 }
 
-// @import 'styles/news-ellipsis';
+@import 'styles/news-ellipsis';
 
 .charts-container {
   display: flex;
@@ -110,11 +114,12 @@ tspan.text-background {
 #tooltip {
   position: fixed;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.85);
   border: 1px solid lightgray;
   pointer-events: none;
   transition: opacity .2s;
   font-family: $georgia;
+  z-index: 1;
 
   p {
     margin: 0;
@@ -129,6 +134,12 @@ text.institution-label {
   transform-box: fill-box;
   text-anchor: middle;
   transform: rotate(45deg) translateY(-16px);
+}
+
+text.institution-label-safari {
+  font-family: Roboto;
+  font-size: 15px;
+  text-anchor: middle;
 }
 
 text.institution-label.right-shift {
@@ -233,6 +244,12 @@ $bar-height: 21px;
       padding: 0;
       width: calc(100% - 54px);
     }
+  }
+}
+
+@media (min-width: 800px) {
+  .flex-max-two {
+    flex: 1 0 34%;
   }
 }
 
