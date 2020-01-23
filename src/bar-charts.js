@@ -21,29 +21,37 @@ function graphBars(container, { cred, column }, highlights = []) {
   // Create bars
   data.forEach((d, i) => {
     const { field } = d;
+    const identifier = 'bar-' + field.replace(/\s/g, '-');
+    console.log(identifier);
 
-    const fieldLabel = container.append('p.bar-label')
+    container.append('p.bar-label.' + identifier)
       .text(field);
     const barContainer = container.append('div.bar-container');
-
-    const numberLabel = barContainer.append('p.bar-number-label')
-      .translate([5, 1])
+    barContainer.append('p.bar-number-label.' + identifier)
       .text(format('$,')(d[column]));
 
-    const bar = barContainer.insert('div.bar', ':first-child')
+    const bar = barContainer.insert('div.bar.' + identifier, ':first-child');
 
     const setLabelVisibility = visibility => {
       if (highlights.includes(field))
         visibility = 1;
-      fieldLabel.st({ opacity: visibility });
-      numberLabel.st({ opacity: visibility });
-      bar.st({ borderWidth: visibility * 2 });
+
+      for (const el of document.getElementsByClassName(identifier)) {
+        if (el.nodeName === 'P')
+          select(el).st({ opacity: visibility });
+        else {
+          const defaultOpacity = 0.75;
+          select(el).st({ opacity: defaultOpacity + visibility * (1 - defaultOpacity) });
+        }
+      }      
     };
 
     setLabelVisibility(0);
     bar.st({ width: d[column] / maxValue * 100 + '%' })
-      .on('mouseover', () => setLabelVisibility(1))
-      .on('mouseleave', () => setLabelVisibility(0));
+      .on('mouseover', () => setLabelVisibility(1))      
+      .on('mouseleave', () => setLabelVisibility(0))
+      .on('touchstart', () => setLabelVisibility(1))
+      .on('touchend', () => setLabelVisibility(0));
   })
 }
 

@@ -26,16 +26,12 @@ const formatAxis = (axis, scale) => axis.scale(scale)
   .tickFormat(format('$~s'))
   .ticks(4);
 
-function graphSubject(container, { cred, field }) {
+function graphSubject(container, { cred, field }, maxValue) {
   const data = SCORECARD_DATA.filter(row => cred === row.cred && field === row.field);
 
   // Create scale and axis functions
-  const x = scaleLinear()
-    .domain([0, max(data, r => Math.max(r.debt, r.earnings)) * 1.05])
-    .range([0, gSize]);
-  const y = scaleLinear()
-    .domain([0, max(data, r => Math.max(r.debt, r.earnings)) * 1.05])
-    .range([gSize, 0]);
+  const x = scaleLinear().domain([ 0, maxValue * 1.05 ]).range([ 0, gSize ]);
+  const y = scaleLinear().domain([ 0, maxValue * 1.05 ]).range([ gSize, 0 ]);
   const xAxis = formatAxis(axisBottom(), x);
   const yAxis = formatAxis(axisLeft(), y);
 
@@ -165,6 +161,15 @@ for (const container of document.getElementsByClassName('charts-container')) {
       return { cred, field };
     });
 
+  let maxValue = 0;
+  SCORECARD_DATA.forEach(row => {
+    if (subjects.some(subj => subj.cred === row.cred && subj.field === row.field)) {
+      const value = Math.max(row.debt, row.earnings);
+      if (value > maxValue)
+        maxValue = value;
+    }
+  });
+
   // Create chart containers and graph and title each one
   select(container)
     .st({
@@ -185,7 +190,7 @@ for (const container of document.getElementsByClassName('charts-container')) {
         marginBottom: (ROTATED_SIZE - SIZE) / 2 - margin.bottom + 15,
       })
       .text(subj.field);
-      graphSubject(subjContainer, subj);
+      graphSubject(subjContainer, subj, maxValue);
     });
 }
 
