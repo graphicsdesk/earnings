@@ -18,7 +18,8 @@ const margin = { top: 20, right: 20, left: 55, bottom: 55 };
 const gSize = SIZE - margin.left - margin.top;
 const containerPadding = (ROTATED_SIZE - SIZE) / 2 - margin.bottom;
 
-const tooltip = select('#tooltip');
+const TOOLTIP_WIDTH = 190;
+const tooltip = select('#tooltip').st({ width: TOOLTIP_WIDTH });
 const tooltipText = tooltip.append('p');
 
 const formatAxis = (axis, scale) => axis.scale(scale)
@@ -114,9 +115,12 @@ function graphSubject(container, { cred, field }, maxValue) {
       let top = containerY + rotatedGSize - mx / 1.414 - (gSize - my) / 1.414 + 32;
       let left = containerX + rotatedGSize / 2 + mx / 1.414 - (gSize - my) / 1.414 + 52;
       // Adjustments
-      const ADJUST = 10
-      top += ADJUST
-      left += ADJUST
+      const ADJUST = 10;
+      top += ADJUST;
+      left += ADJUST;
+      if (left + TOOLTIP_WIDTH > window.innerWidth)
+        left -= ADJUST + TOOLTIP_WIDTH / 2;
+
 
       // TODO: ADJUST ORIENTATION IF OVER SCREEN
       tooltip.st({
