@@ -14,23 +14,31 @@ function graphBars(container, { cred, column }, highlights = []) {
   const maxValue = max(data, d => d[column]);
 
   // Title
-  container.append('dummy');
+  if (column !== 'earnings')
+    container.append('dummy');
   container.append('p.bar-chart-title')
     .text(`Median ${column} for ${cred}'s degrees at Columbia`);
+  if (column === 'earnings')
+    container.append('dummy');
 
   // Create bars
   data.forEach((d, i) => {
     const { field } = d;
     const identifier = 'bar-' + field.replace(/\s/g, '-');
-    console.log(identifier);
 
-    container.append('p.bar-label.' + identifier)
-      .text(field);
-    const barContainer = container.append('div.bar-container');
+    if (column !== 'earnings')
+      container.append('p.bar-label.' + identifier)
+        .text(field);
+    const barContainer = container.append('div.bar-container.bar-container-' + column);
     barContainer.append('p.bar-number-label.' + identifier)
       .text(format('$,')(d[column]));
 
-    const bar = barContainer.insert('div.bar.' + identifier, ':first-child');
+    const divNS = 'div.bar.' + identifier;
+    const bar = column === 'earnings' ? barContainer.append(divNS) : barContainer.insert(divNS, ':first-child');
+
+    if (column === 'earnings')
+      container.append('p.bar-label.' + identifier)
+        .text(field);
 
     const setLabelVisibility = visibility => {
       if (highlights.includes(field))

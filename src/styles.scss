@@ -114,12 +114,16 @@ tspan.text-background {
 }
 
 text.institution-label {
-  transform: rotate(45deg) translateY(-16px);
   font-family: Roboto;
   font-size: 15px;
   transform-origin: center;
   transform-box: fill-box;
   text-anchor: middle;
+  transform: rotate(45deg) translateY(-16px);
+}
+
+text.institution-label.right-shift {
+  transform: rotate(45deg) translateY(-16px) translateX(-20px);
 }
 
 /* Bar charts */
@@ -139,8 +143,11 @@ text.institution-label {
   margin-top: 25px;
 }
 
-.bar-chart-container:not(:last-child) {
-  padding-right: 50px;
+.bar-chart-container:first-child {
+  padding-right: 20px;
+}
+.bar-chart-container:last-child {
+  padding-left: 20px;
 }
 
 .bar-chart-title {
@@ -164,6 +171,20 @@ $bar-height: 21px;
 .bar-container {
   display: flex;
   height: $bar-height;
+}
+
+.bar-container-earnings {
+  display: flex;
+  justify-content: flex-end;
+
+  & + .bar-label {
+    text-align: left;
+  }
+
+  .bar-number-label {
+    transform: translateX(-8px);
+    width: auto;
+  }
 }
 
 .bar {

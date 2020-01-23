@@ -74,7 +74,9 @@ function graphSubject(container, { cred, field }, maxValue) {
     });
 
   const cuDatum = data.filter(row => row.institution === CU_NAME)[0];
-  const cuLabel = svg.append('text.institution-label');
+  const cuLabel = svg.append(
+    `text.institution-label${cuDatum.field === 'Film/Video and Photographic Arts' ? '.right-shift' : ''}`
+  );
   cuLabel.append('tspan.text-background')
     .text('Columbia')
     .at({
