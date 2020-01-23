@@ -14,7 +14,7 @@ const CIRCLE_RADIUS = 6.5;
 
 const SIZE = 300;
 const ROTATED_SIZE = SIZE * 1.414;
-const margin = { top: 20, right: 20, left: 55, bottom: 55 };
+const margin = { top: 25, right: 25, left: 65, bottom: 65 };
 const gSize = SIZE - margin.left - margin.top;
 const containerPadding = (ROTATED_SIZE - SIZE) / 2 - margin.bottom;
 
@@ -101,6 +101,7 @@ function graphSubject(container, { cred, field }, maxValue) {
   const rotatedGSize = gSize * 1.414;
   function mousemoved() {
     let [ mx, my ] = mouse(select(this).node());
+    console.log(mx, my);
     const index = delaunay.find(mx, my);
     const { x: containerX, y: containerY } = container.node().getBoundingClientRect();
 
@@ -192,7 +193,7 @@ for (const container of document.getElementsByClassName('charts-container')) {
       .append('p.subject-title')
       .st({
         marginTop: 0,
-        marginBottom: (ROTATED_SIZE - SIZE) / 2 - margin.bottom + 15,
+        marginBottom: (ROTATED_SIZE - SIZE) / 2 - margin.bottom + 35,
       })
       .text(subj.field);
       graphSubject(subjContainer, subj, maxValue);
