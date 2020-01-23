@@ -1,4 +1,4 @@
-# TK
+**Columbia tuition rates are among the highest in the country. Is it worth it?**
 
 ## Setup
 
