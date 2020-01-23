@@ -306,4 +306,12 @@ $bar-height: 21px;
     margin-bottom: 20;
   }
 }
+
+.graphic:nth-child(10) {
+  display: none;
+}
+
+.bar-number-label {
+  line-height: 21px;
+}
 /* ADDED AFTER PUBLICATION - END */
