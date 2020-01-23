@@ -14,7 +14,8 @@ const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const VORONOI_RADIUS = 70;
 const CIRCLE_RADIUS = 6.5;
 
-const SIZE = 300;
+const SIZE = window.innerWidth < 335 ? window.innerWidth / 1.4 : 300;
+
 const ROTATED_SIZE = SIZE * 1.414;
 const margin = { top: 25, right: 25, left: 65, bottom: 65 };
 const gSize = SIZE - margin.left - margin.top;
@@ -137,8 +138,8 @@ function graphSubject(container, { cred, field }, maxValue) {
       });
       tooltipText.html(`
         <b>${datum.institution}</b><br/>
-        Median debt: ${format('$,')(datum.debt)}<br/>
-        Median earnings: ${format('$,')(datum.earnings)}<br/>
+        Median debt: ${format('$~s')(datum.debt)}<br/>
+        Median earnings: ${format('$~s')(datum.earnings)}<br/>
       `)
       // TODO: tooltip things
     }

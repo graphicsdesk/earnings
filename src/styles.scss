@@ -225,6 +225,17 @@ $bar-height: 21px;
   }
 }
 
+@media (max-width: 900px) {
+  .bars-container {
+    justify-content: flex-start;
+
+    .bar-chart-container {
+      padding: 0;
+      width: calc(100% - 54px);
+    }
+  }
+}
+
 // .bar:hover + .bar-label {
   // opacity: 1;
 // }

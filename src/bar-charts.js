@@ -30,12 +30,16 @@ function graphBars(container, { cred, column }, highlights = []) {
       container.append('p.bar-label.' + identifier)
         .text(field);
     const barContainer = container.append('div.bar-container.bar-container-' + column);
-    const numberLabel = format('$,')(d[column]);
+    const numberLabel = (x => {
+      if ((x / 1000) >= 1)
+        x = Math.round(x / 1000) + 'k';
+      return '$' + x;
+    })(d[ column ]);
     const barNumberLabel = barContainer.append('p.bar-number-label.' + identifier)
       .text(numberLabel);
 
     if (column === 'earnings')
-      barNumberLabel.translate([ -numberLabel.length * 8.5, 0 ])
+      barNumberLabel.translate([ -numberLabel.length * 10, 0 ])
 
     const divNS = 'div.bar.' + identifier;
     const bar = column === 'earnings' ? barContainer.append(divNS) : barContainer.insert(divNS, ':first-child');
