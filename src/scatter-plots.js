@@ -9,7 +9,9 @@ import { f } from 'd3-jetpack/essentials';
 import SCORECARD_DATA from '../data/data.json';
 import { CU_NAME } from './constants';
 
-const VORONOI_RADIUS = 50;
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+const VORONOI_RADIUS = 70;
 const CIRCLE_RADIUS = 6.5;
 
 const SIZE = 300;
@@ -101,8 +103,8 @@ function graphSubject(container, { cred, field }, maxValue) {
   const rotatedGSize = gSize * 1.414;
   function mousemoved() {
     let [ mx, my ] = mouse(select(this).node());
-    console.log(mx, my);
     const index = delaunay.find(mx, my);
+    console.log(mx,my)
     const { x: containerX, y: containerY } = container.node().getBoundingClientRect();
 
     if (index !== null) {
@@ -117,6 +119,10 @@ function graphSubject(container, { cred, field }, maxValue) {
       // Baseline calculations
       let top = containerY + rotatedGSize - mx / 1.414 - (gSize - my) / 1.414 + 32;
       let left = containerX + rotatedGSize / 2 + mx / 1.414 - (gSize - my) / 1.414 + 52;
+      if (isSafari) {
+        top = containerY + gSize + my;
+        left = containerX + gSize / 3 + mx;
+      }
       // Adjustments
       const ADJUST = 10;
       top += ADJUST;
