@@ -138,8 +138,8 @@ function graphSubject(container, { cred, field }, maxValue) {
       });
       tooltipText.html(`
         <b>${datum.institution}</b><br/>
-        Median debt: ${format('$~s')(datum.debt)}<br/>
-        Median earnings: ${format('$~s')(datum.earnings)}<br/>
+        Median debt: ${format('$,')(datum.debt)}<br/>
+        Median earnings: ${format('$,')(datum.earnings)}<br/>
       `)
       // TODO: tooltip things
     }

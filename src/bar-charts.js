@@ -17,7 +17,7 @@ function graphBars(container, { cred, column }, highlights = []) {
   if (column !== 'earnings')
     container.append('dummy');
   container.append('p.bar-chart-title')
-    .text(`Median ${column} for ${cred}'s degrees at Columbia`);
+    .text(`Median ${column} for ${cred.toLowerCase()}'s degrees at Columbia`);
   if (column === 'earnings')
     container.append('dummy');
 
