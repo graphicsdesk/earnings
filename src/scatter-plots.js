@@ -121,8 +121,6 @@ function graphSubject(container, { cred, field }, maxValue) {
       if (left + TOOLTIP_WIDTH > window.innerWidth)
         left -= ADJUST + TOOLTIP_WIDTH / 2;
 
-
-      // TODO: ADJUST ORIENTATION IF OVER SCREEN
       tooltip.st({
         top,
         left,
@@ -136,10 +134,11 @@ function graphSubject(container, { cred, field }, maxValue) {
       // TODO: tooltip things
     }
   }
+
   const mouseleft = () => {
     circleHighlight.st({ opacity: 0 });
     tooltip.st({ opacity: 0 });
-  }
+  };
 
   const circleHighlight = svg.append('circle.circle-highlight')
     .at({ r: CIRCLE_RADIUS })
@@ -199,8 +198,8 @@ for (const container of document.getElementsByClassName('charts-container')) {
 }
 
 // Utility function; cartesian distance
-function distance(px, py, mx, my) {
+const distance = (px, py, mx, my) => {
   const a = px - mx;
   const b = py - my;
   return Math.sqrt(a * a + b * b);
-}
+};
