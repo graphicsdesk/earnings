@@ -446,4 +446,4 @@ module.exports=[{institution:"Alabama A & M University",field:"Mechanical Engine
 },{"d3-selection":"ysDv","d3-array":"K0bd","d3-format":"VuZR","d3-jetpack/essentials":"SeT5","../data/data.json":"dY2t","./constants":"iJA9"}],"mpVp":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.hamburgerTrigger=a;var e=t(require("text-balancer")),r=require("../config.yml");function t(e){return e&&e.__esModule?e:{default:e}}function a(){navbar.classList.toggle("show-nav-links")}require("./scatter-plots.js"),require("./bar-charts.js"),e.default.balanceText(".headline, .deck, .image-overlay .image-caption-text");
 },{"text-balancer":"uGUE","../config.yml":"bpyv","./scatter-plots.js":"zpkp","./bar-charts.js":"JB6g"}]},{},["mpVp"], "script")
-//# sourceMappingURL=script.e0e62486.js.map
+//# sourceMappingURL=https://spectator-static-assets.s3.amazonaws.com/earnings/script.e0e62486.js.map
